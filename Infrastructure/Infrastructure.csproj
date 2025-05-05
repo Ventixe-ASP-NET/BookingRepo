@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Business\Dto\" />
+    <Folder Include="Business\Services\" />
+    <Folder Include="Data\Context\" />
+    <Folder Include="Data\Models\" />
+    <Folder Include="Data\Repository\" />
+  </ItemGroup>
+
+</Project>
