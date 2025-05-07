@@ -1,16 +1,30 @@
+using BookingsGrpcServer.Services;
+using Infrastructure.Business.Managers;
 using Infrastructure.Data.Context;
+using Infrastructure.Data.Models;
+using Infrastructure.Data.Repository;
+using Infrastructure.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddGrpc();
+builder.Services.AddScoped<BookingRepository>();
+builder.Services.AddScoped<IBaseRepository<BookingEntity>, BookingRepository>();
+builder.Services.AddScoped<BookingManager>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5000, o => o.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2);
+});
 
 var app = builder.Build();
 
+app.MapGrpcService<BookingGrpcService>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapGet("/", context =>
