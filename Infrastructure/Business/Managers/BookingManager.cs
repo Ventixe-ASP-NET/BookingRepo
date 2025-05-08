@@ -29,5 +29,15 @@ namespace Infrastructure.Business.Managers
                 includes: x => x.EventSnapshot
                 )).ToList();
         }
+
+        public async Task<bool> UpdateBookingAsync(BookingEntity updatedBooking)
+        {
+            return await _bookingRepository.UpdateAsync(updatedBooking);
+        }
+
+        public async Task<bool> DeleteBookingAsync(int id)
+        {
+            return await _bookingRepository.DeleteAsync(b => b.Id == id);
+        }
     }
 }
