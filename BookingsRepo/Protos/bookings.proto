@@ -7,6 +7,8 @@ package bookings;
 service BookingService {
   rpc AddBooking (AddBookingRequest) returns (AddBookingReply);
   rpc GetAllBookings (GetAllBookingsRequest) returns (GetAllBookingsReply);
+  rpc UpdateBooking (UpdateBookingRequest) returns (UpdateBookingReply);
+  rpc DeleteBooking (DeleteBookingRequest) returns (DeleteBookingReply);
 }
 
 message AddBookingRequest {
@@ -40,3 +42,25 @@ message GetAllBookingsReply {
 }
 
 message GetAllBookingsRequest {}
+
+message UpdateBookingRequest {
+  int32 id = 1;
+  int32 invoiceId = 2;
+  string bookingName = 3;
+  string createdAt = 4;
+  string eventId = 5;
+}
+
+message UpdateBookingReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message DeleteBookingRequest {
+  int32 id = 1;
+}
+
+message DeleteBookingReply {
+  bool success = 1;
+  string message = 2;
+}
