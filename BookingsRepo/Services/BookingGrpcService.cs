@@ -59,12 +59,6 @@ namespace BookingsGrpcServer.Services
                     BookingName = b.BookingName,
                     CreatedAt = b.CreatedAt.ToString("o"),
                     EventId = b.EventId.ToString(),
-
-                    // Hämtas via navigation property
-                    EventName = b.EventSnapshot?.Name ?? "",
-                    EventLocation = b.EventSnapshot?.Location ?? "",
-                    EventStartTime = b.EventSnapshot?.StartTime.ToString("o") ?? "",
-                    EventEndTime = b.EventSnapshot?.EndTime.ToString("o") ?? ""
                 });
             }
 
