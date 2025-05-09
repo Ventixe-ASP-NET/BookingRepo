@@ -15,11 +15,6 @@ namespace Infrastructure.Data.Models
         public int InvoiceId { get; set; }
         public DateTime CreatedAt { get; set; }
         public string BookingName { get; set; }
-
-        //FK Till Eventsnapshot
         public Guid EventId { get; set; }
-
-        [ForeignKey(nameof(EventId))]
-        public EventSnapshotEntity EventSnapshot { get; set; }
     }
 }

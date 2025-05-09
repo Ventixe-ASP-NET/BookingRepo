@@ -25,9 +25,7 @@ namespace Infrastructure.Business.Managers
 
         public async Task<List<BookingEntity>> GetAllBookingsAsync()
         {
-            return (await _bookingRepository.GetAllAsync(
-                includes: x => x.EventSnapshot
-                )).ToList();
+            return (await _bookingRepository.GetAllAsync()).ToList();
         }
 
         public async Task<bool> UpdateBookingAsync(BookingEntity updatedBooking)

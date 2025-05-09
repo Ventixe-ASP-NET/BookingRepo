@@ -10,7 +10,6 @@ namespace Infrastructure.Data.Context
         {
         }
         public DbSet<BookingEntity> Bookings { get; set; }
-        public DbSet<EventSnapshotEntity> EventSnapshots { get; set; }
 
 
     }
