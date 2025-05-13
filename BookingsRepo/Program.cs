@@ -6,7 +6,7 @@ using Infrastructure.Data.Repository;
 using Infrastructure.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-
+//test
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddScoped<BookingRepository>();
