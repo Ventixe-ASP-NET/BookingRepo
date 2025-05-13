@@ -37,6 +37,5 @@ namespace Infrastructure.Business.Managers
         {
             return await _bookingRepository.DeleteAsync(b => b.Id == id);
         }
-
     }
 }
