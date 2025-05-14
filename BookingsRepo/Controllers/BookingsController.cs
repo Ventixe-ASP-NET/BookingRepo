@@ -7,7 +7,7 @@ namespace BookingsGrpcServer.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BookingsController : Controller
+    public class BookingsController : ControllerBase
     {
         private readonly BookingManager _manager;
 
@@ -16,62 +16,59 @@ namespace BookingsGrpcServer.Controllers
             _manager = manager;
         }
 
-        // GET: api/bookings
         [HttpGet]
         public async Task<IActionResult> GetAllBookings()
         {
-            var bookings = await _manager.GetAllBookingsAsync();
-            return Ok(bookings);
+            try
+            {
+                var bookings = await _manager.GetAllBookingsAsync();
+                return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetAllBookings error: {ex.Message}");
+                return StatusCode(500, "Unexpected error while retrieving bookings");
+            }
         }
 
-        // POST: api/bookings
         [HttpPost]
         public async Task<IActionResult> AddBooking([FromBody] BookingDto dto)
         {
-            var booking = new BookingEntity
-            {
-                InvoiceId = dto.InvoiceId,
-                BookingName = dto.BookingName,
-                CreatedAt = dto.CreatedAt,
-                EventId = dto.EventId
-            };
-
-            var success = await _manager.AddBookingAsync(booking);
+            var (success, error) = await _manager.AddBookingWithTicketsAsync(dto);
 
             if (!success)
-                return BadRequest("Could not add booking");
+                return BadRequest(error);
 
             return Ok("Booking created");
         }
 
-        // PUT: api/bookings/1
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingDto dto)
         {
             var updatedBooking = new BookingEntity
             {
-                Id = id, // sätts från route
+                Id = id,
                 InvoiceId = dto.InvoiceId,
                 BookingName = dto.BookingName,
                 CreatedAt = dto.CreatedAt,
                 EventId = dto.EventId
             };
 
-            var success = await _manager.UpdateBookingAsync(updatedBooking);
+            var (success, message) = await _manager.UpdateBookingAsync(updatedBooking);
 
             if (!success)
-                return NotFound("Could not update booking (not found or failed)");
+                return NotFound(message);
 
             return Ok("Booking updated");
         }
 
-        // DELETE: api/bookings/1
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
-            var success = await _manager.DeleteBookingAsync(id);
+            var (success, message) = await _manager.DeleteBookingAsync(id);
+
             if (!success)
-                return NotFound("Booking not found or could not be deleted");
+                return NotFound(message);
 
             return Ok("Booking deleted");
         }

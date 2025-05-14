@@ -16,5 +16,6 @@ namespace Infrastructure.Data.Models
         public DateTime CreatedAt { get; set; }
         public string BookingName { get; set; }
         public Guid EventId { get; set; }
+        public ICollection<BookedTicketEntity> Tickets { get; set; } = new List<BookedTicketEntity>();
     }
 }

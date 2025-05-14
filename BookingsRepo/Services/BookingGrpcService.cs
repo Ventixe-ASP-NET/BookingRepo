@@ -26,7 +26,7 @@ namespace BookingsGrpcServer.Services
                     EventId = Guid.Parse(request.EventId)
                 };
 
-                await _manager.AddBookingAsync(booking);
+                //await _manager.AddBookingWithTicketsAsync(booking);
 
                 return new AddBookingReply
                 {
@@ -82,8 +82,8 @@ namespace BookingsGrpcServer.Services
 
                 return new UpdateBookingReply
                 {
-                    Success = success,
-                    Message = success ? "Booking updated successfully" : "Failed to update booking"
+                   // Success = success,
+                    //Message = success ? "Booking updated successfully" : "Failed to update booking"
                 };
             }
             catch (Exception ex)
@@ -104,8 +104,8 @@ namespace BookingsGrpcServer.Services
 
                 return new DeleteBookingReply
                 {
-                    Success = success,
-                    Message = success ? "Booking deleted successfully" : "Failed to delete booking"
+                    //Success = success,
+                    //Message = success ? "Booking deleted successfully" : "Failed to delete booking"
                 };
             }
             catch (Exception ex)

@@ -10,7 +10,18 @@ namespace Infrastructure.Data.Context
         {
         }
         public DbSet<BookingEntity> Bookings { get; set; }
+        public DbSet<BookedTicketEntity> BookedTicket { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<BookingEntity>()
+                .HasMany(b => b.Tickets)
+                .WithOne(t => t.Booking)
+                .HasForeignKey(t => t.BookingId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
 
     }
 }

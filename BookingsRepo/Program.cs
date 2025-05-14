@@ -12,6 +12,7 @@ builder.Services.AddGrpc();
 builder.Services.AddScoped<BookingRepository>();
 builder.Services.AddScoped<IBaseRepository<BookingEntity>, BookingRepository>();
 builder.Services.AddScoped<BookingManager>();
+builder.Services.AddHttpClient<EventServiceClient>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
