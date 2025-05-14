@@ -8,7 +8,7 @@ namespace Infrastructure.Business.Dto
 {
     public class BookingDto
     {
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
         public string BookingName { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid EventId { get; set; }
