@@ -20,7 +20,7 @@ namespace BookingsGrpcServer.Services
             {
                 var booking = new BookingEntity
                 {
-                    InvoiceId = request.InvoiceId,
+                    //InvoiceId = request.InvoiceId,
                     BookingName = request.BookingName,
                     CreatedAt = DateTime.Parse(request.CreatedAt),
                     EventId = Guid.Parse(request.EventId)
@@ -55,7 +55,7 @@ namespace BookingsGrpcServer.Services
                 reply.Bookings.Add(new BookingModel
                 {
                     Id = b.Id,
-                    InvoiceId = b.InvoiceId,
+                    //InvoiceId = b.InvoiceId,
                     BookingName = b.BookingName,
                     CreatedAt = b.CreatedAt.ToString("o"),
                     EventId = b.EventId.ToString(),
@@ -72,7 +72,7 @@ namespace BookingsGrpcServer.Services
                 var updatedBooking = new BookingEntity
                 {
                     Id = request.Id,
-                    InvoiceId = request.InvoiceId,
+                    //InvoiceId = request.InvoiceId,
                     BookingName = request.BookingName,
                     CreatedAt = DateTime.Parse(request.CreatedAt),
                     EventId = Guid.Parse(request.EventId)
