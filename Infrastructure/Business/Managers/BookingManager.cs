@@ -106,5 +106,21 @@ namespace Infrastructure.Business.Managers
                 return (false, "Unexpected error while deleting booking");
             }
         }
+
+        public async Task<BookingStatsDto> GetBookingStatsAsync()
+        {
+            var bookings = await _bookingRepository.GetAllWithTicketsAsync();
+
+            var totalBookings = bookings.Count;
+            var totalTickets = bookings.Sum(b => b.Tickets.Sum(t => t.Quantity));
+            var totalEarnings = bookings.Sum(b => b.Tickets.Sum(t => t.Quantity * t.PricePerTicket));
+
+            return new BookingStatsDto
+            {
+                TotalBookings = totalBookings,
+                TotalTicketsSold = totalTickets,
+                TotalEarnings = totalEarnings
+            };
+        }
     }
 }

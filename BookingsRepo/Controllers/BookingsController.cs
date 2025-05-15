@@ -72,5 +72,20 @@ namespace BookingsGrpcServer.Controllers
 
             return Ok("Booking deleted");
         }
+
+        [HttpGet("stats")]
+        public async Task<IActionResult> GetStats()
+        {
+            try
+            {
+                var stats = await _manager.GetBookingStatsAsync();
+                return Ok(stats);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetStats error: {ex.Message}");
+                return StatusCode(500, "Unexpected error while retrieving stats");
+            }
+        }
     }
 }

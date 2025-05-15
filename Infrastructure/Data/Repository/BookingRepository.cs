@@ -14,6 +14,11 @@ namespace Infrastructure.Data.Repository
         public BookingRepository(AppDbContext context) : base(context)
         {
         }
+
+        public async Task<List<BookingEntity>> GetAllWithTicketsAsync()
+        {
+            return (await GetAllAsync(includes: b => b.Tickets)).ToList();
+        }
     }
 
 }
