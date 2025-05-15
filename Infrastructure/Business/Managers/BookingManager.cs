@@ -122,5 +122,42 @@ namespace Infrastructure.Business.Managers
                 TotalEarnings = totalEarnings
             };
         }
+
+        public async Task<BookingChartDto> GetBookingOverviewAsync(string range)
+        {
+            var allBookings = await _bookingRepository.GetAllAsync();
+
+            var grouped = range.ToLower() switch
+            {
+                "today" => allBookings
+                    .Where(b => b.CreatedAt.Date == DateTime.Today)
+                    .GroupBy(b => b.CreatedAt.Hour)
+                    .OrderBy(g => g.Key)
+                    .Select(g => new { Label = $"{g.Key}:00", Count = g.Count() }),
+
+                "week" => allBookings
+                    .Where(b => b.CreatedAt >= DateTime.Today.AddDays(-6))
+                    .GroupBy(b => b.CreatedAt.Date)
+                    .OrderBy(g => g.Key)
+                    .Select(g => new { Label = g.Key.ToString("ddd"), Count = g.Count() }),
+
+                "month" => allBookings
+                    .Where(b => b.CreatedAt >= DateTime.Today.AddDays(-30))
+                    .GroupBy(b => b.CreatedAt.Date)
+                    .OrderBy(g => g.Key)
+                    .Select(g => new { Label = g.Key.ToString("MM-dd"), Count = g.Count() }),
+
+                _ => allBookings
+                    .GroupBy(b => new { b.CreatedAt.Year, b.CreatedAt.Month })
+                    .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
+                    .Select(g => new { Label = $"{g.Key.Month}/{g.Key.Year}", Count = g.Count() })
+            };
+
+            return new BookingChartDto
+            {
+                Labels = grouped.Select(g => g.Label).ToList(),
+                Data = grouped.Select(g => g.Count).ToList()
+            };
+        }
     }
 }
