@@ -87,5 +87,11 @@ namespace BookingsGrpcServer.Controllers
                 return StatusCode(500, "Unexpected error while retrieving stats");
             }
         }
+        [HttpGet("stats/overview")]
+        public async Task<IActionResult> GetBookingOverview([FromQuery] string range = "week")
+        {
+            var stats = await _manager.GetBookingOverviewAsync(range);
+            return Ok(stats);
+        }
     }
 }
