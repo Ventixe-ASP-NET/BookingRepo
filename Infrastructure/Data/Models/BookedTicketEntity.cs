@@ -10,7 +10,6 @@ namespace Infrastructure.Data.Models
     public class BookedTicketEntity
     {
         public int Id { get; set; }
-
         public int BookingId { get; set; } // Foreign key till Booking
         [JsonIgnore]
         public BookingEntity Booking { get; set; } = null!; // Navigation
