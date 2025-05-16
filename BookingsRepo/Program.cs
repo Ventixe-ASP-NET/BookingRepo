@@ -1,12 +1,13 @@
 using BookingsGrpcServer.Services;
 using Infrastructure.Business.Managers;
+using Infrastructure.Business.Service;
 using Infrastructure.Data.Context;
 using Infrastructure.Data.Models;
 using Infrastructure.Data.Repository;
 using Infrastructure.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-//test
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddScoped<BookingRepository>();
@@ -28,6 +29,16 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddSingleton(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var connectionString = config["ServiceBus:ConnectionString"];
+    var queueName = config["ServiceBus:QueueName"];
+
+    return new BookingServiceBusSender(connectionString, queueName);
+});
+
 var app = builder.Build();
 
 app.MapGrpcService<BookingGrpcService>();

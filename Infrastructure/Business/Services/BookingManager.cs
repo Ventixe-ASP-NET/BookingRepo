@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Business.Dto;
+using Infrastructure.Business.Service;
 using Infrastructure.Data.Models;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,12 @@ namespace Infrastructure.Business.Managers
     {
         private readonly BookingRepository _bookingRepository;
         private readonly EventServiceClient _eventClient;
-
-        public BookingManager(BookingRepository bookingRepository, EventServiceClient eventClient)
+        private readonly BookingServiceBusSender _serviceBusSender;
+        public BookingManager(BookingRepository bookingRepository, EventServiceClient eventClient, BookingServiceBusSender serviceBusSender)
         {
             _bookingRepository = bookingRepository;
             _eventClient = eventClient;
+            _serviceBusSender = serviceBusSender;
         }
 
         public async Task<(bool Success, string? ErrorMessage)> AddBookingWithTicketsAsync(BookingDto dto)
@@ -61,7 +63,19 @@ namespace Infrastructure.Business.Managers
                 };
 
                 var result = await _bookingRepository.AddAsync(booking);
-                return result ? (true, null) : (false, "Could not save booking to database");
+                if (result)
+                {
+                    await _serviceBusSender.SendBookingCreatedAsync(
+                        booking.Id,
+                        booking.EventId,
+                        booking.Tickets.ToList()
+                        );
+                    return (true, null);
+                }
+                else
+                {
+                    return (false, "Could not save booking to database");
+                }
             }
             catch (Exception ex)
             {
