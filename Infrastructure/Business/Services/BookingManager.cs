@@ -46,13 +46,14 @@ namespace Infrastructure.Business.Managers
                     if (actualTicket.TicketsLeft < requestedTicket.Quantity)
                         return (false, $"Not enough tickets left for {actualTicket.TicketType_}");
                 }
-
+                var evoucherId = GenerateEvoucherId();
                 var booking = new BookingEntity
                 {
                     InvoiceId = dto.InvoiceId,
                     BookingName = dto.BookingName,
                     CreatedAt = dto.CreatedAt,
                     EventId = dto.EventId,
+                    EvoucherId = evoucherId,
                     Tickets = dto.Tickets.Select(t => new BookedTicketEntity
                     {
                         TicketTypeId = t.TicketTypeId,
@@ -60,6 +61,7 @@ namespace Infrastructure.Business.Managers
                         Quantity = t.Quantity,
                         PricePerTicket = t.PricePerTicket
                     }).ToList()
+
                 };
 
                 var result = await _bookingRepository.AddAsync(booking);
@@ -82,6 +84,12 @@ namespace Infrastructure.Business.Managers
                 Console.WriteLine($"Unexpected error in AddBookingWithTicketsAsync: {ex.Message}");
                 return (false, "Unexpected error while adding booking");
             }
+        }
+        private static string GenerateEvoucherId()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Range(0, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray());
         }
 
         public async Task<List<BookingEntity>> GetAllBookingsAsync()

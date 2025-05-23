@@ -17,5 +17,7 @@ namespace Infrastructure.Data.Models
         public string BookingName { get; set; }
         public Guid EventId { get; set; }
         public ICollection<BookedTicketEntity> Tickets { get; set; } = new List<BookedTicketEntity>();
+
+        public string EvoucherId { get; set; }
     }
 }
