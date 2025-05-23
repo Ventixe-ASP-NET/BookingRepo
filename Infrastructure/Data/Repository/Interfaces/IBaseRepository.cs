@@ -18,6 +18,7 @@ namespace Infrastructure.Data.Repository.Interfaces
         Task<IEnumerable<TEntity>> GetAllAsync(bool orderByDescending = false, Expression<Func<TEntity, object>>? sortBy = null, Expression<Func<TEntity, bool>>? filterBy = null, params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> findBy, params Expression<Func<TEntity, object>>[] includes);
         Task<bool> UpdateAsync(TEntity entity);
+
     }
 
     public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class

@@ -93,5 +93,15 @@ namespace BookingsGrpcServer.Controllers
             var stats = await _manager.GetBookingOverviewAsync(range);
             return Ok(stats);
         }
+
+        [HttpGet("by-evoucher")]
+        public async Task<IActionResult> GetByEvoucher([FromQuery] string code)
+        {
+            var booking = await _manager.GetByEvoucherCodeAsync(code);
+            if (booking == null)
+                return NotFound("No booking found with this E-voucher");
+
+            return Ok(booking);
+        }
     }
 }

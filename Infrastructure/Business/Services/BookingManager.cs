@@ -181,5 +181,13 @@ namespace Infrastructure.Business.Managers
                 Data = grouped.Select(g => g.Count).ToList()
             };
         }
+
+        public async Task<BookingEntity?> GetByEvoucherCodeAsync(string code)
+        {
+            return await _bookingRepository.GetAsync(
+                b => b.EvoucherId == code,
+                b => b.Tickets
+            );
+        }
     }
 }
